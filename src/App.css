@@ -258,9 +258,7 @@ input {
   border-radius: 8px;
 }
 
-#basket-table td {
-  background: #fff;
-}
+
 
 
 
@@ -276,7 +274,9 @@ input {
 }
 
 .ammendingRow {
-  background-color: #50c573 !important;
+  color: white;
+  font-weight: bold;
+  background-color:#20513B;
 }
 
 @media (min-width: 600px) {

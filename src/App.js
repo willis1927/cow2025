@@ -228,7 +228,7 @@ function App() {
       setBasket(updatedBasket);
       localStorage.setItem('COWbasket', JSON.stringify(updatedBasket));
     }
-  }, [orderQty ,ammending, basket , selectedValue]);
+  }, [orderQty ,ammending, selectedValue]);
     
     suggestions = data.map(item => `${item.Number} - ${item.Wine}`);
   return (
@@ -334,7 +334,8 @@ function App() {
           </thead>
           <tbody>
             {basket.map((item, index) => (
-              <tr key={item.sku}>
+              <tr className ={ selectedValue.SKU === item.SKU? "ammendingRow" : ""} 
+             key={item.SKU} onClick={() => {handleSelect(`${item.Number} - ${item.Wine}`)}}>
                 
                 <td >{item.Wine}</td>
                 
@@ -372,6 +373,11 @@ function App() {
       <button onClick={()=>{
         const newBasket = basket.filter((_, i) => i !== index);
         setBasket(newBasket);
+        if (selectedValue.Wine === basket[index].Wine) {
+           setSelectedValue({})}
+        setInputValue("");
+        setOrderQty(0);
+        setAmmending(false)
         localStorage.setItem('COWbasket', JSON.stringify(newBasket));
         toggleDialog()
       }}>Yes</button>
