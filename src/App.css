@@ -279,6 +279,12 @@ input {
   background-color:#20513B;
 }
 
+dialog { 
+  
+  border:#0F3B3E 3px solid;
+  
+}
+
 @media (min-width: 600px) {
   .App {
     max-width: 600px;
