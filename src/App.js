@@ -1,6 +1,6 @@
 import './App.css';
 import WineList from './WineList.csv'
-import { useState, useEffect } from 'react';  
+import { useState, useEffect, useRef } from 'react';  
 import Papa from 'papaparse';
 import {toast, Toaster} from 'sonner';
 
@@ -31,8 +31,19 @@ function App() {
       return {name: "", email: "", phone: ""}
     };
 })
+
+  const dialogRef = useRef(null)
+  const [dialogContent, setDialogContent] = useState(null)
+  const [index, setIndex] =useState(null)
   
- 
+  const toggleDialog = () =>{
+    if(!dialogRef.current){
+      return;
+    }
+    dialogRef.current.hasAttribute("open")
+    ? dialogRef.current.close()
+    : dialogRef.current.showModal()
+  }
 
   useEffect(() => {
     setOrderTotal(basket.map(item => (bottlesInBasket >= 6 ? item["6Price"] : item["1Price"]) * item.Qty).reduce((a, b) => parseFloat(a) + parseFloat(b), 0).toFixed(2) || 0);
@@ -59,7 +70,7 @@ function App() {
       toast.error("Please add at least one wine to the basket");
       return;
     }
-    console.log(order)
+    
     submitOrder(order)
      
 
@@ -205,7 +216,7 @@ function App() {
   }, []); // runs once on component mount
   // prepare suggestions list when data is loaded
   useEffect(() => {
-    console.log("Order Qty changed to: ", orderQty);
+    
     if (ammending) {
       let updatedBasket = basket.map(item => {
         if (item.Number === selectedValue.Number) {
@@ -256,8 +267,7 @@ function App() {
         <hr />
          <div className='autocomplete-container'>
        
-              
-         <input 
+          <input 
           className="autocomplete-input"
           type="search"
           value={inputValue}
@@ -332,11 +342,17 @@ function App() {
                 <td>£{(bottlesInBasket >= 6 ? item["6Price"] : item["1Price"])}</td>
                 <td>£{Number((bottlesInBasket >= 6 ? item["6Price"] : item["1Price"]) * item.Qty).toFixed(2)}</td>
                 <td><button id="removeBtn" onClick={() => {
-                  if (window.confirm(`Are you sure you want to remove ${item.Wine}?`)) {
-                  const newBasket = basket.filter((_, i) => i !== index);
-                  setBasket(newBasket);
-                  localStorage.setItem('COWbasket', JSON.stringify(newBasket));
-                  }
+                  setDialogContent(`Are you sure you want to remove ${item.Wine}?`)
+                  setIndex(index)
+                  toggleDialog()
+
+
+
+                  // if (window.confirm(`Are you sure you want to remove ${item.Wine}?`)) {
+                  // const newBasket = basket.filter((_, i) => i !== index);
+                  // setBasket(newBasket);
+                  // localStorage.setItem('COWbasket', JSON.stringify(newBasket));
+                  // }
                 }}>X</button></td>
               </tr>
 
@@ -344,11 +360,23 @@ function App() {
 
           </tbody>
         </table>
-        <button className="commitBtn" id="submitOrder" hidden={basket.length === 0} onClick={() => {
-          sendOrder()
-         console.log("Order Sent - Thank you!")}}>Send Order</button>
+        <button className="commitBtn" id="submitOrder" disabled={basket.length === 0} onClick={()=>{sendOrder()}}>Send Order</button>
         </div>
         <Toaster position="bottom-center" richColors />
+    
+    <dialog className="popMessage" ref={dialogRef} onClick={(e) => {
+      if (e.currentTarget === e.target){
+        toggleDialog();}
+    }}>
+      {dialogContent}<br></br>
+      <button onClick={()=>{
+        const newBasket = basket.filter((_, i) => i !== index);
+        setBasket(newBasket);
+        localStorage.setItem('COWbasket', JSON.stringify(newBasket));
+        toggleDialog()
+      }}>Yes</button>
+      <button onClick={toggleDialog}>No</button>
+    </dialog>
     </div>
   );
 }
