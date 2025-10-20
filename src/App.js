@@ -335,7 +335,15 @@ function App() {
           <tbody>
             {basket.map((item, index) => (
               <tr className ={ selectedValue.SKU === item.SKU? "ammendingRow" : ""} 
-             key={item.SKU} onClick={() => {handleSelect(`${item.Number} - ${item.Wine}`)}}>
+             key={item.SKU} onClick={() => {
+              if(selectedValue.SKU === item.SKU){
+                setSelectedValue({})
+                setInputValue("")
+                return
+              }
+              handleSelect(`${item.Number} - ${item.Wine}`)
+              
+              }}>
                 
                 <td >{item.Wine}</td>
                 
