@@ -101,16 +101,16 @@ function App() {
     }
      
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
+  //const handleChange = (e) => {
+  useEffect( () => { 
+    
     setFilteredSuggestions(
       suggestions.filter(suggestion => 
-       suggestion.toLowerCase().includes(value.toLowerCase())
+       suggestion.toLowerCase().includes(inputValue.toLowerCase())
       )
     );
-    if (filteredSuggestions.length === 1 && filteredSuggestions[0].toLowerCase() === value.toLowerCase()) {
-      setSelectedValue(data.find(item => item.Wine.toLowerCase() === value.toLowerCase()));
+    if (filteredSuggestions.length === 1 && filteredSuggestions[0].toLowerCase() === inputValue.toLowerCase()) {
+      setSelectedValue(data.find(item => item.Wine.toLowerCase() === inputValue.toLowerCase()));
       setFilteredSuggestions([]);
     } else {
       setSelectedValue({});
@@ -119,7 +119,7 @@ function App() {
       setFilteredSuggestions([]);
       setSelectedValue({});
     }
-  }
+},[inputValue])
 
   const handleSelect = (value) => {
     console.log("Selected: ",value);
@@ -241,7 +241,7 @@ function App() {
           className="autocomplete-input"
           type="search"
           value={inputValue}
-          onChange={handleChange}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="Search by wine number or name..."
           id='wine-search-input'
           onFocus={(e) => e.target.scrollIntoView({ behavior: 'smooth' ,block: 'start'})}
