@@ -183,7 +183,7 @@ function App() {
       
     }
     fetchData();
-  }, []); // runs once on component mount
+  }, []); 
   // prepare suggestions list when data is loaded
   useEffect(() => {
     
