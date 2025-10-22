@@ -98,38 +98,8 @@ function App() {
       error:"Sorry, there was an error sending your order - please try again or come and speak to us at the orders desk"
     })
     
-    
-
     }
      
-
-    
-
-    /*fetch('https://emserv.vercel.app/', {
-      method: 'POST',
-      body: (JSON.stringify(order)),
-      headers: {
-        'Content-Type' : 'application/json'
-      },
-    })
-    .then(response => response)
-    .then(data => {
-      if (data.status === 200) {
-        toast.success("Order sent successfully - Please go to the orders desk to provide delivery details and payment");
-        setBasket([])
-        setBottlesInBasket(0)
-        localStorage.removeItem("COWbasket");
-        setCustomerDetails({name: "", email: "", phone: ""})
-        localStorage.removeItem("COWcustomerDetails");
-      } else {
-        toast.error("There was an error sending your order - please try again come to speak to us at the orders desk")
-      }
-      
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    }); */
-   
 
   const handleChange = (e) => {
     const value = e.target.value;
