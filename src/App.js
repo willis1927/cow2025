@@ -8,7 +8,7 @@ import {toast, Toaster} from 'sonner';
 function App() {
   
   const [ammending, setAmmending] = useState(false);
-  const [data, setData] = useState([]);
+  const data = useRef([])
   const [inputValue, setInputValue] = useState("");
   let suggestions = [];
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -44,6 +44,25 @@ function App() {
     ? dialogRef.current.close()
     : dialogRef.current.showModal()
   }
+
+   //load and parse CSV file
+  useEffect(() => {
+      const fetchData = async () => {
+      const response = await fetch(WineList);
+      const reader = response.body.getReader();
+      const result = await reader.read(); // raw array
+      const decoder = new TextDecoder('utf-8');
+      const csv = decoder.decode(result.value); // the csv text
+      const parsedData = Papa.parse(csv, 
+        { header: true ,
+          skipEmptyLines: true
+        }).data; // object with { data, errors, meta }
+      data.current = parsedData;// array of objects
+      //console.log(parsedData);
+      
+    }
+    fetchData();
+  }, []); 
 
   useEffect(() => {
     setOrderTotal(basket.map(item => (bottlesInBasket >= 6 ? item["6Price"] : item["1Price"]) * item.Qty).reduce((a, b) => parseFloat(a) + parseFloat(b), 0).toFixed(2) || 0);
@@ -104,13 +123,16 @@ function App() {
   //const handleChange = (e) => {
   useEffect( () => { 
     
-    setFilteredSuggestions(
-      suggestions.filter(suggestion => 
-       suggestion.toLowerCase().includes(inputValue.toLowerCase())
-      )
-    );
-    if (filteredSuggestions.length === 1 && filteredSuggestions[0].toLowerCase() === inputValue.toLowerCase()) {
-      setSelectedValue(data.find(item => item.Wine.toLowerCase() === inputValue.toLowerCase()));
+    let tempFilt = suggestions.filter(suggestion => 
+       suggestion.toLowerCase().includes(inputValue.toLowerCase()))
+    setFilteredSuggestions(tempFilt)
+    
+    
+    //checking if users input directly matches doesn't account for click to select setting input to number & wine
+    if (tempFilt.length === 1 && tempFilt[0].toLowerCase() === inputValue.toLowerCase()) {
+      
+      setSelectedValue(data.current.find(item => item.Wine.toLowerCase() === inputValue.split(" - ")[1].toLowerCase()));
+     //add in code from handle select, might need to go out side of if
       setFilteredSuggestions([]);
     } else {
       setSelectedValue({});
@@ -125,7 +147,7 @@ function App() {
     console.log("Selected: ",value);
     setInputValue(value);
     let searchVal = value.split(" - ")[0];
-    setSelectedValue(data.find(item => item.Number === searchVal));
+    setSelectedValue(data.current.find(item => item.Number === searchVal));
     setFilteredSuggestions([]);
     let itemInBasket = basket.find(item => item.Number === searchVal);
     if (itemInBasket) {
@@ -166,24 +188,7 @@ function App() {
         setSelectedValue({})
         setOrderQty(0)
   }
-  //load and parse CSV file
-  useEffect(() => {
-      const fetchData = async () => {
-      const response = await fetch(WineList);
-      const reader = response.body.getReader();
-      const result = await reader.read(); // raw array
-      const decoder = new TextDecoder('utf-8');
-      const csv = decoder.decode(result.value); // the csv text
-      const parsedData = Papa.parse(csv, 
-        { header: true ,
-          skipEmptyLines: true
-        }).data; // object with { data, errors, meta }
-      setData(parsedData); // array of objects
-      //console.log(parsedData);
-      
-    }
-    fetchData();
-  }, []); // runs once on component mount
+ // runs once on component mount
   // prepare suggestions list when data is loaded
   useEffect(() => {
     
@@ -200,7 +205,7 @@ function App() {
     }
   }, [orderQty ,ammending, selectedValue]);
     
-    suggestions = data.map(item => `${item.Number} - ${item.Wine}`);
+    suggestions = data.current.map(item => `${item.Number} - ${item.Wine}`);
   return (
     <div className="App">
   <div className="App-header" >
@@ -253,7 +258,7 @@ function App() {
             <a href="#selectContainer" ><li
               className='autocomplete-suggestion' 
               key={index} 
-              onClick={() => handleSelect(suggestion)}>
+              onClick={() => setInputValue(suggestion)}>
               {suggestion}
               </li></a>
           ))}
