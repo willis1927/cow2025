@@ -127,13 +127,19 @@ function App() {
        suggestion.toLowerCase().includes(inputValue.toLowerCase()))
     setFilteredSuggestions(tempFilt)
     
-    
+    let searchVal = inputValue.split(" - ")[1];
     //checking if users input directly matches doesn't account for click to select setting input to number & wine
     if (tempFilt.length === 1 && tempFilt[0].toLowerCase() === inputValue.toLowerCase()) {
       
-      setSelectedValue(data.current.find(item => item.Wine.toLowerCase() === inputValue.split(" - ")[1].toLowerCase()));
+      setSelectedValue(data.current.find(item => item.Wine.toLowerCase() === searchVal.toLowerCase()));
      //add in code from handle select, might need to go out side of if
       setFilteredSuggestions([]);
+      let itemInBasket = basket.find(item => item.Wine === searchVal);
+      if (itemInBasket) {
+      console.log("Item already in basket, ammending")
+      setAmmending(true);
+      setOrderQty(itemInBasket.Qty);
+    }
     } else {
       setSelectedValue({});
     }
