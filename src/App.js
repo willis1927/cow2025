@@ -287,7 +287,7 @@ function App() {
             orderQty === "" ? 1 : parseInt(orderQty) + 1
         )}}>+</button>
         
-        <button id="clearSelection" onClick={clearSelection} hidden={ammending}>Clear</button>
+        <button id="clearSelection" onClick={clearSelection} hidden={ammending}>Cancel</button>
         
         </div>
          <div hidden={!selectedValue.Wine}> <button className="commitBtn" onClick = {() =>{
