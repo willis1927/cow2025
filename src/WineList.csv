@@ -47,7 +47,7 @@ Table,Number,SKU,Wine,Vintage,1Price,6Price
 7,45,4548921,Venta del Puerto 12 Seleccion Especial,2021,19.99,16.99
 7,46,4544720,Seleccion Especial Numerada 70 Toro Reserva,2020,25,15
 7,47,4513223,Quinta do Casal Branco Cuvee Comte Louis de Narbonne-Lara,2023,13.99,10.99
-8,48,4206224,Il Poeta Chardonnay,2024,14.99,12.99
+8,48,4206224,Il Poeta Chardonnay,2024,14.99,10.99
 8,49,0322024,Vesuvium Greco di Tufo,2024,13.99,11.99
 8,50,2379520,Caroso Montepulciano Riserva,2020,14.99,10.99
 8,51,2114720,Il Poeta Barolo,2020,22,20
@@ -65,8 +65,8 @@ Table,Number,SKU,Wine,Vintage,1Price,6Price
 10,63,4362024,RedHeads Semillon,2024,15.99,13.99
 10,64,4043823,RedHeads Harmonie Rox Chardonnay,2023,11.99,10.99
 10,65,2802223,RedHeads Wilson Gunn Bellum Cabernet Sauvignon Shiraz,2023,18.99,16.99
-10,66,0193622,RedHeads Barrel Monkeys Shiraz,2022,14.99,12.99
-10,67,3244522,RedHeads Night Of The Living Red,2022,24,22
+10,66,0193622,RedHeads Barrel Monkeys Shiraz,2022,14.99,11.99
+10,67,3244522,RedHeads Night Of The Living Red,2022,24,18.99
 10,68,0184220,Esule by RedHeads,2020,30,25
 11,69,4169622,William Knuttel Sonoma Valley Chardonnay,2022,19.99,17.99
 11,70,4580524,Zuccardi Poligonos Tupungato Semillon,2024,27,25
@@ -74,9 +74,9 @@ Table,Number,SKU,Wine,Vintage,1Price,6Price
 11,72,3770021,Zuccardi Concreto Malbec ,2021,30,25
 11,73,3993223,Black Saint Peter Old Vine Zinfandel,2023,18.99,25
 11,74,2679321,Pulenta XI Gran Cabernet Franc,2021,45,40
-12,75,1802524,Casa Silva Seleccion Especial Sauvignon Blanc,2024,13.99,11.99
+12,75,1802524,Casa Silva Seleccion Especial Sauvignon Blanc,2024,13.99,9.99
 12,76,0908924,Casa Silva Seleccion Especial Chardonnay Semillon,2024,13.99,11.99
-12,77,1672023,Casa Silva Cool Coast Pinot Noir,2023,19.99,17.99
+12,77,1672023,Casa Silva Cool Coast Pinot Noir,2023,19.99,15.99
 12,78,4135224,Casa Silva Seleccion Especial Cabernet Sauvignon Carmenere,2024,14.99,12.99
 12,79,0949023,Casa Silva Carmenere Reserva Cuvee Colchagua,2023,14.99,12.99
 13,80,1949515,Andresen 10 YR Old White Port 50cl,NV,18.99,16.99
