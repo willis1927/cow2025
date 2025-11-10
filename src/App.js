@@ -7,16 +7,18 @@ import {toast, Toaster} from 'sonner';
 
 function App() {
   
-  const [ammending, setAmmending] = useState(false);
+  const [amending, setAmending] = useState(false);
   const data = useRef([])
   const [inputValue, setInputValue] = useState("");
   let suggestions = [];
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [selectedValue, setSelectedValue] = useState({});
   const [orderQty, setOrderQty] = useState(0);
+  const [topHidden, setTopHidden] = useState(false)
   const [basket, setBasket] = useState(() => {
     const saved = localStorage.getItem("COWbasket");
     if (saved) {
+      
       return JSON.parse(saved);
     } else {
       return [];
@@ -44,7 +46,7 @@ function App() {
     ? dialogRef.current.close()
     : dialogRef.current.showModal()
   }
-
+ 
    //load and parse CSV file
   useEffect(() => {
       const fetchData = async () => {
@@ -62,6 +64,7 @@ function App() {
       
     }
     fetchData();
+    
   }, []); 
 
   useEffect(() => {
@@ -136,8 +139,8 @@ function App() {
       setFilteredSuggestions([]);
       let itemInBasket = basket.find(item => item.Wine === searchVal);
       if (itemInBasket) {
-      console.log("Item already in basket, ammending")
-      setAmmending(true);
+      
+      setAmending(true);
       setOrderQty(itemInBasket.Qty);
     }
     } else {
@@ -157,8 +160,8 @@ function App() {
     setFilteredSuggestions([]);
     let itemInBasket = basket.find(item => item.Number === searchVal);
     if (itemInBasket) {
-      console.log("Item already in basket, ammending")
-      setAmmending(true);
+      console.log("Item already in basket, amending")
+      setAmending(true);
       
       setOrderQty(itemInBasket.Qty);
     }
@@ -174,13 +177,13 @@ function App() {
       toast.error("Please select a wine and enter a valid quantity");
       return;
     }
-    if (ammending) {
-      setAmmending(false);
+    if (amending) {
+      setAmending(false);
       clearSelection()
       return;
     }
     if (basket.find(item => item.Number === selectedValue.Number)) {
-      toast.error("This wine is already in the basket - please ammend the quantity there if you wish to change it");
+      toast.error("This wine is already in the basket - please amend the quantity there if you wish to change it");
       return;
     }
     setBasket([...basket,{...selectedValue, "Qty":orderQty}])
@@ -198,7 +201,7 @@ function App() {
   // prepare suggestions list when data is loaded
   useEffect(() => {
     
-    if (ammending) {
+    if (amending) {
       let updatedBasket = basket.map(item => {
         if (item.Number === selectedValue.Number) {
           return {...item, Qty: orderQty};
@@ -209,15 +212,18 @@ function App() {
       setBasket(updatedBasket);
       localStorage.setItem('COWbasket', JSON.stringify(updatedBasket));
     }
-  }, [orderQty ,ammending, selectedValue]);
+  }, [orderQty ,amending, selectedValue]);
     
     suggestions = data.current.map(item => `${item.Number} - ${item.Wine}`);
+  
   return (
     <div className="App">
-  <div className="App-header" >
+ <div className="App-header" >
   <img src="/AverysLogo.png" className="App-logo" alt="logo" />
   </div>
-
+ <div className='details-container' hidden={topHidden}>
+  
+        
         <h1> Averys Celebration of Wine <br></br>Order Submission</h1>
         <div className="customer-info-form">
           <div className="form-group">
@@ -245,7 +251,11 @@ function App() {
             }}/>
           </div>
         </div>
-        <hr />
+        <button onClick={() => setTopHidden(true)}>Select wines</button>
+        </div>
+
+        <div className="order-container" hidden={!topHidden}>
+         <button onClick={() => setTopHidden(false)}>Amend Contact Details</button>
          <div className='autocomplete-container'>
        
           <input 
@@ -270,8 +280,9 @@ function App() {
           ))}
           </ul>
         </div>
-      
+          
          <div hidden={!selectedValue.Wine} id= "selectContainer" className='selectedContainer'>
+          
           <h2>{selectedValue.Wine} {selectedValue.Vintage}</h2>
           <p>Table  - {selectedValue.Table}</p>
           <p> Wine - {selectedValue.Number} </p>
@@ -287,13 +298,13 @@ function App() {
             orderQty === "" ? 1 : parseInt(orderQty) + 1
         )}}>+</button>
         
-        <button id="clearSelection" onClick={clearSelection} hidden={ammending}>Cancel</button>
+        <button id="clearSelection" onClick={clearSelection} hidden={amending}>Cancel</button>
         
         </div>
          <div hidden={!selectedValue.Wine}> <button className="commitBtn" onClick = {() =>{
           addToBasket()
           
-        }}>{!ammending?"Add":"Update"}</button>
+        }}>{!amending?"Add":"Update"}</button>
         </div>
       
         
@@ -315,7 +326,7 @@ function App() {
           </thead>
           <tbody>
             {basket.map((item, index) => (
-              <tr className ={ selectedValue.SKU === item.SKU? "ammendingRow" : ""} 
+              <tr className ={ selectedValue.SKU === item.SKU? "amendingRow" : ""} 
              key={item.SKU} onClick={() => {
               if(selectedValue.SKU === item.SKU){
                 setSelectedValue({})
@@ -366,12 +377,13 @@ function App() {
            setSelectedValue({})}
         setInputValue("");
         setOrderQty(0);
-        setAmmending(false)
+        setAmending(false)
         localStorage.setItem('COWbasket', JSON.stringify(newBasket));
         toggleDialog()
       }}>Yes</button>
       <button onClick={toggleDialog}>No</button>
     </dialog>
+    </div>
     </div>
   );
 }

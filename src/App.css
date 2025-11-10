@@ -35,8 +35,8 @@ body {
 
 .App-logo {
   display: block;
-  max-width: 100%;
-  width: 100%;
+  max-width: 50%;
+  width: 50%;
   height: auto;
   margin: 0 auto;
 }
@@ -96,7 +96,7 @@ position: absolute;
 }
 
 .selectedContainer h2, #basket-container h3{
-  font-family: 'Arsenal', 'Arsenal Fallback', sans-serif;
+   font-family: 'Libre Caslon Text', 'Libre Caslon Text Fallback';
 }
 .selectedContainer p{
   font-family: 'Libre Caslon Text', 'Libre Caslon Text Fallback';
