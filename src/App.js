@@ -310,7 +310,7 @@ function App() {
         
        
         <div id="basket-container" >
-        <h3>Basket - {bottlesInBasket} bottles    Order Total - £{orderTotal}</h3>
+        <h3 id="basket-total">Basket - {bottlesInBasket} bottles    Order Total - £{orderTotal}</h3>
         
         <table id="basket-table" hidden={basket.length === 0}>
           <thead>
